@@ -17,7 +17,7 @@ app.set('views',  './views');
 const restaurant = require(path.join(__dirname, 'public','jsons','restaurant.json')).results
 
 //建立靜態routing
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname,'public')));
 
 
 //建立動態routing
@@ -36,15 +36,35 @@ app.get('/restaurants/:id', (req, res) => {
   res.render('detail',{restaurant:selectedRestaurant})
 })
 
+//search
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
-  res.send(`This is ${keyword} search result`)
+  let searchedRestaurant = findRestaurantByName(restaurant,keyword)
+  if (!searchedRestaurant){
+    searchedRestaurant = findRestaurantByCategory(restaurant,keyword)
+  } 
+  if (searchedRestaurant != null){
+      res.render('detail',{restaurant:searchedRestaurant})
+  } else {
+      res.render('noresult')
+  }
 })
 
-
+//http://localhost:3000/search?keyword=%E6%A2%85%E5%AD%90
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-
+//----------------------------------------------------------------
+//把search 從餐廳名稱 找關鍵字寫成function 
+function findRestaurantByName(restaurant,keyword) {
+  searchedRestaurant = restaurant.find((rst) => rst.name.toLowerCase().includes(keyword))
+  return searchedRestaurant
+}
+  
+//把search 從餐廳類別 找關鍵字寫成function 
+function findRestaurantByCategory(restaurant,keyword) {
+  searchedRestaurant = restaurant.find((rst) => rst.category.toLowerCase().includes(keyword))
+  return searchedRestaurant
+}
 
