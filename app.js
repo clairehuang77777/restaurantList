@@ -13,8 +13,8 @@ app.engine('hbs', engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 app.set('views',  './views');
 
-
-
+//把movie資料存到物件內
+const restaurant = require(path.join(__dirname, 'public','jsons','restaurant.json')).results
 
 //建立靜態routing
 app.use(express.static('public'));
@@ -30,9 +30,10 @@ app.get('/home' , (req, res) => {
   res.render('home')
 })
 
-app.get('/restaurant/:id', (req, res) => {
+app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
-  res.send(`This is the restaurant ${id} details`)
+  const selectedRestaurant = restaurant.find((rst)=> rst.id.toString() === id)
+  res.render('detail',{restaurant:selectedRestaurant})
 })
 
 app.get('/search', (req, res) => {
