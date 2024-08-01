@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/home' , (req, res) => {
-  res.render('home')
+  res.render('home', {restaurant:restaurant})
 })
 
 app.get('/restaurants/:id', (req, res) => {
@@ -39,15 +39,14 @@ app.get('/restaurants/:id', (req, res) => {
 //search
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
-  let searchedRestaurant = findRestaurantByName(restaurant,keyword)
-  if (!searchedRestaurant){
-    searchedRestaurant = findRestaurantByCategory(restaurant,keyword)
-  } 
-  if (searchedRestaurant != null){
-      res.render('detail',{restaurant:searchedRestaurant})
-  } else {
+  let searchedRestaurant = findRestaurantByName(restaurant,keyword) 
+  if (searchedRestaurant.length === 0) {
+    searchedRestaurant = findRestaurantByCategory(restaurant,keyword)}
+  if (searchedRestaurant.length === 0){
       res.render('noresult')
-  }
+  }else{
+      res.render('home',{restaurant:searchedRestaurant})
+    } 
 })
 
 //http://localhost:3000/search?keyword=%E6%A2%85%E5%AD%90
@@ -58,13 +57,13 @@ app.listen(port, () => {
 //----------------------------------------------------------------
 //把search 從餐廳名稱 找關鍵字寫成function 
 function findRestaurantByName(restaurant,keyword) {
-  searchedRestaurant = restaurant.find((rst) => rst.name.toLowerCase().includes(keyword))
+  searchedRestaurant = restaurant.filter((rst) => rst.name.toLowerCase().includes(keyword))
   return searchedRestaurant
 }
   
 //把search 從餐廳類別 找關鍵字寫成function 
 function findRestaurantByCategory(restaurant,keyword) {
-  searchedRestaurant = restaurant.find((rst) => rst.category.toLowerCase().includes(keyword))
+  searchedRestaurant = restaurant.filter((rst) => rst.category.toLowerCase().includes(keyword))
   return searchedRestaurant
 }
 
