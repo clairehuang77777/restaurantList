@@ -14,7 +14,7 @@ This is a restaurant website that let user browse restaurant list and search res
 
 
 ### How to Use:
-- 1. clone the git URL :https://github.com/clairehuang77777/restaurantList.git
+- 1. clone git :https://github.com/clairehuang77777/restaurantList.git
 - 2. cd your-repo
 - 3. install npm, express, express-handlebar
 - 4. "npm run dev" to run the server
