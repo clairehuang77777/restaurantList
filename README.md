@@ -1,6 +1,6 @@
 ### About The Project
 This is a restaurant website that let user browse restaurant list and search restaurant by name & type.
-![screenshot](public/jpg/screenshot.png)
+![screenshot](public/jpg/giphy.gif)
 
 ### Built With
 - Node.js
