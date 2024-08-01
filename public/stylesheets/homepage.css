@@ -129,6 +129,16 @@ header {
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+#backtomainpage {
+  position: relative;
+  top: -330px;
+  left: 150px;
+  color: white;
+}
+
+#sad-face{
+  z-index: 10;
+}
 @media screen and (max-width: 768px) {
   #restaurant-no-result-title {
     font-size: 2rem;
