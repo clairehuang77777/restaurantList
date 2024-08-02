@@ -57,13 +57,13 @@ app.listen(port, () => {
 //----------------------------------------------------------------
 //把search 從餐廳名稱 找關鍵字寫成function 
 function findRestaurantByName(restaurant,keyword) {
-  searchedRestaurant = restaurant.filter((rst) => rst.name.toLowerCase().includes(keyword))
+  let searchedRestaurant = restaurant.filter((rst) => rst.name.toLowerCase().includes(keyword))
   return searchedRestaurant
 }
   
 //把search 從餐廳類別 找關鍵字寫成function 
 function findRestaurantByCategory(restaurant,keyword) {
-  searchedRestaurant = restaurant.filter((rst) => rst.category.toLowerCase().includes(keyword))
+  let searchedRestaurant = restaurant.filter((rst) => rst.category.toLowerCase().includes(keyword))
   return searchedRestaurant
 }
 
