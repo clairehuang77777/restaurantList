@@ -3,10 +3,14 @@
 const express = require('express')
 const { engine } = require('express-handlebars');
 const path = require('path');
+//透過 sequelize 連線本機資料庫MySQL
+
+const db = require("./models")
+const rstList = db.rstList
 
 //初始化express-handlebars
 const app = express()
-const port = 3000
+const port = 4001
 
 //初始化express-handlebars
 app.engine('hbs', engine({ extname: '.hbs' }));
@@ -14,6 +18,7 @@ app.set('view engine', 'hbs');
 app.set('views',  './views');
 
 //把movie資料存到物件內
+//要把資料改成從**資料庫**來~
 const restaurant = require(path.join(__dirname, 'public','jsons','restaurant.json')).results
 
 //建立靜態routing
@@ -24,6 +29,12 @@ app.use(express.static(path.join(__dirname,'public')));
 //當輸入根目錄時，幫我轉導到/home, 並刺激hbs幫我render home.hbs
 app.get('/', (req, res) => {
   res.redirect('/home')
+})
+
+app.get('/test',(req, res)=> {
+  return rstList.findAll()
+    .then((rstList)=>res.send({rstList}))
+    .catch((error)=>console.log(error))
 })
 
 app.get('/home' , (req, res) => {
