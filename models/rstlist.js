@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'rstList',
-    tableName: 'rstList',
+    tableName: 'rstLists',
     timestamps: false // 停用 createdAt 和 updatedAt
   });
   return rstList;
