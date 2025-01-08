@@ -25,25 +25,29 @@
     <div class="col-md-10 col-12 mx-auto">
       <div class="row row-cols-sm-3">
         {{#each rstList}}
-        <a href="/restaurants/{{this.id}}" class="text-secondary">
-          <div class="card mb-3">
+        <div class="card mb-3">
+          <a href="/restaurants/{{this.id}}" class="text-secondary">
             <img class="card-img-top" src={{this.image}}
               alt={{this.name}}>
+          </a>
             <div class="card-body p-3">
               <h6 class="card-title mb-1">{{this.name}}</h6>
-
-              <div class="restaurant-category mb-1">
-                <i class="fas fa-utensils pr-2"></i> {{this.category}}
-              </div>
-
+            <div class="restaurant-category mb-1">
+              <i class="fas fa-utensils pr-2"></i> {{this.category}}
+            </div>
               <span class="badge rounded-pill bg-danger font-weight-normal">
                 {{this.rating}}
                 <i class="fas fa-star fa-xs"></i>
-              </span>
-
+              </span></br>
+              <div class="editarea">
+                <span><a href="/edit/{{this.id}}">edit</a></span>
+                <span><a href="/restaurants/{{this.id}}">detail</a></span>
+                <form action="/delete/{{this.id}}?_method=DELETE" method="post" style="display:inline;">
+                  <button type="submit" id="deleteBtn">delete</button>
+                </form>
+              </div>
             </div>
           </div>
-        </a>
         {{/each}}
       </div>
     </div>

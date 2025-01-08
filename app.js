@@ -13,6 +13,12 @@ const { Op } = require('sequelize');
 const app = express()
 const port = 4001
 
+//套用methodoverride把post轉成put
+var methodOverride = require('method-override');
+const rstlist = require('./models/rstlist');
+
+
+
 //初始化express-handlebars
 const hbs = create({
   defaultLayout: 'main',
@@ -20,12 +26,19 @@ const hbs = create({
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,  // 允許訪問原型屬性
     allowProtoMethodsByDefault: true     // 允許訪問原型方法
-  }
+  },
+  helpers: {
+    eq: (a, b) => a === b, // 返回是否相等
+  },
 })
 
+//express要能正確解決type=urlencoded的值
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views',  './views');
+app.use(methodOverride('_method'))
+
 
 //把movie資料存到物件內
 //要把資料改成從**db**來~
@@ -42,10 +55,82 @@ app.get('/', (req, res) => {
   .then((rstList)=>res.render('home',{rstList:rstList}))
 })
 
+app.post('/',(req,res)=>{
+  const newRst = req.body
+  console.log(newRst)
 
-app.get('/home' , (req, res) => {
-  return rstList.findAll()
-  .then((rstList)=>res.render('home',{rstList:rstList}))
+    return rstList.create({ 
+    name: newRst.name, 
+    name_en: newRst.name_en,
+    category: newRst.category,
+    image: newRst.image,
+    location: newRst.location,
+    phone: newRst.phone,
+    google_map: newRst.google_map,
+    rating:newRst.rating,
+    description:newRst.description,
+  })
+  .then(()=>res.redirect('/'))
+  .catch((error)=>console.error(error))
+})
+
+app.get('/edit/:id',(req, res)=> {
+  const id = req.params.id
+
+  return rstList.findByPk(id,
+    {raw: true}
+  )
+  .then((rstList)=>res.render('edit',{rstList:rstList}))
+  .catch((error)=>console.error(error))
+})
+
+app.put('/edit/:id',async(req, res)=>{
+  const editingID = req.params.id
+  const editingRst = req.body
+
+  try {
+    await rstList.update({
+    name: editingRst.name, 
+    name_en: editingRst.name_en,
+    category: editingRst.category,
+    image: editingRst.image,
+    location: editingRst.location,
+    phone: editingRst.phone,
+    google_map: editingRst.google_map,
+    rating:editingRst.rating,
+    description:editingRst.description},
+    {
+      where : {
+        id :editingID,
+      }
+    }
+  )
+  const allRst = await rstList.findAll({raw:true})
+  res.render('home',{rstList:allRst})
+  }
+  catch(error){
+    console.error(error)
+  }
+})
+
+
+app.delete('/delete/:id',async (req, res)=>{
+  const id = req.params.id
+
+  try { 
+      await rstList.destroy({
+      where: {
+        id : id,
+      }
+    })
+  
+  const allRst = await rstList.findAll({raw:true})
+  res.render('home',{rstList:allRst})
+  }
+  catch(error){
+    console.error(error)
+  }
+
 })
 
 app.get('/restaurants/:id', async (req, res) => {
@@ -81,6 +166,9 @@ app.get('/search', async (req, res) => {
   }
 })
 
+app.get('/create',(req,res)=>{
+  res.render('create')
+})
 
 //http://localhost:3000/search?keyword=%E6%A2%85%E5%AD%90
 app.listen(port, () => {

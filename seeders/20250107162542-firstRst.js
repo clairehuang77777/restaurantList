@@ -12,9 +12,7 @@ const restaurantData = restaurant.map((rst)=>({
       phone:rst.phone,
       google_map:rst.google_map,
       rating:rst.rating,
-      description:rst.description,
-      createdAt:new Date(),
-      updatedAt:new Date()
+      description:rst.description
     }))
 
 

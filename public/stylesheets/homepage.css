@@ -52,10 +52,16 @@ header {
 
 .card {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  padding-left: 0px;
+  padding-right: 0px;  
 }
 
 .card img {
   height: 180px;
+}
+
+.card-img-top{
+  object-fit: cover;
 }
 
 .card-title {
@@ -76,6 +82,81 @@ header {
   text-align: center;
   font-size: 3rem;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/*create page*/
+
+.form-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+label{
+  margin-bottom: 25px;
+}
+
+input,select {
+  width: 200px;
+}
+
+a{
+  text-decoration:none;
+  color:white;
+
+}
+
+a:hover{
+  color: white;
+}
+
+.editarea{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around;
+  align-items: center;
+  background-color: #ab8c8c;
+  margin-top: 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+
+#createBtn{
+  width:300px;
+  color:white;
+  background-color: orangered;
+  border-radius: 10px ;
+  border-width: 0px;
+  padding-top:5px;
+  padding-bottom: 5px;
+}
+
+#modifyBtn{
+  width: 300px;
+    color: white;
+    background-color: darkgreen;
+    border-radius: 10px;
+    border-width: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#deleteBtn{
+  color: white;
+  border: none;
+  background-color: #ab8c8c;
+  padding: 0px;
+}
+
+#createNewRstBtn{
+  background-color: #ab8c8c;
+  color: white;
+  border-radius: 15px;
+  width: 100px;
+  justify-content: center;
+  display: flex;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1)
 }
 
 @media screen and (max-width: 992px) {
