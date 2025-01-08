@@ -8,6 +8,7 @@ const path = require('path');
 const db = require("./models")
 const rstList = db.rstList
 
+const { Op } = require('sequelize');
 //初始化express-handlebars
 const app = express()
 const port = 4001
@@ -62,17 +63,24 @@ app.get('/restaurants/:id', async (req, res) => {
 })
 
 //search
-app.get('/search', (req, res) => {
-  const keyword = req.query.keyword
-  let searchedRestaurant = findRestaurantByName(restaurant,keyword) 
-  if (searchedRestaurant.length === 0) {
-    searchedRestaurant = findRestaurantByCategory(restaurant,keyword)}
-  if (searchedRestaurant.length === 0){
-      res.render('noresult')
-  }else{
-      res.render('home',{restaurant:searchedRestaurant})
-    } 
+app.get('/search', async (req, res) => {
+  const keyword = req.query.keyword || ''
+  try{
+    const findRstList = await rstList.findAll({
+      where: {
+          name: {
+            [Op.like]: `%${keyword}%`},
+        },
+      raw:true
+    })
+    .then((findRstList)=>res.render('home',{rstList:findRstList}))
+    .catch((error)=>console.error(error))
+  }
+  catch(error){
+    console.error(error)
+  }
 })
+
 
 //http://localhost:3000/search?keyword=%E6%A2%85%E5%AD%90
 app.listen(port, () => {
@@ -80,11 +88,6 @@ app.listen(port, () => {
 })
 
 //----------------------------------------------------------------
-//把search 從餐廳名稱 找關鍵字寫成function 
-function findRestaurantByName(restaurant,keyword) {
-  let searchedRestaurant = restaurant.filter((rst) => rst.name.toLowerCase().includes(keyword))
-  return searchedRestaurant
-}
   
 //把search 從餐廳類別 找關鍵字寫成function 
 function findRestaurantByCategory(restaurant,keyword) {
